@@ -1,27 +1,28 @@
 import React from 'react'
 import './Product.css'
 
-function Product() {
+let ratingStar = 'https://static.vecteezy.com/system/resources/thumbnails/000/380/404/small/Basic_Elements__28175_29.jpg'
+
+function Product({id, title, image, price, rating }) {
     return (
         <div className='product'>
             <div className="product__info">
-                <p>The lean startup</p> 
+                <p>{title}</p> 
                 <p className='product__price'>
                     <small>$</small>
-                    <strong>19.99</strong>
+                    <strong>{price}</strong>
                 </p>
                 <div className='product__rating'>
-                    <p>*</p>
+                    {Array(rating).fill().map((_, i) => (
+                        <img  className='product__rating' src={ratingStar} alt='rating star' />
+                    ))}
                 </div>
             </div>
             
-            <imp 
+            <img 
+                src={image}
              />
-            {/* title */}
-            {/* price  */}
-            {/* rating */}
-            {/* image  */}
-            {/* add to basket button */}
+           <button> Add to Basket </button>
         </div>
     )
 }
