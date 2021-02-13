@@ -1,9 +1,28 @@
 import React from 'react'
 import './Product.css'
+import { useStateValue } from "./StateProvider"
 
 let ratingStar = 'https://static.vecteezy.com/system/resources/thumbnails/000/380/404/small/Basic_Elements__28175_29.jpg'
 
 function Product({id, title, image, price, rating }) {
+
+    const [{ basket }, dispatch] = useStateValue(); 
+
+    console.log("This is the basket >>> ", basket)
+    const addToBasket = () => {
+        //dispatch the item into the basket 
+        dispatch({
+            type: 'ADD_TO_BASKET', 
+            item: {
+                id, 
+                title, 
+                image, 
+                price, 
+                rating
+            }
+        })
+    }
+
     return (
         <div className='product'>
             <div className="product__info">
@@ -22,7 +41,7 @@ function Product({id, title, image, price, rating }) {
             <img 
                 src={image}
              />
-           <button> Add to Basket </button>
+           <button onClick={addToBasket}> Add to Basket </button>
         </div>
     )
 }
