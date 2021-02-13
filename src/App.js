@@ -2,21 +2,24 @@ import React from 'react'
 import './App.css';
 import Header from './Header'
 import Home from './Home'
+import Checkout from './Checkout';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+
 
 function App() {
   // BEM - Block, Element, Modifier
+  // Can press CTRL + Spacebar to import components
   return (
     <Router> 
       <div className="app">
-        
+        <Header />
         <Switch> 
           <Route path="/checkout"> 
-            <Header />
-            <h1>I AM THE CHECKOUT PAGE</h1>
+            <Checkout />
           </Route>
           <Route path='/'>
-            <Header />
+            
+            
             <Home />
           </Route>
         </Switch>
