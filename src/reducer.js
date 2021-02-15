@@ -14,7 +14,31 @@ const reducer = (state, action) => {
                 ...state, 
                 basket: [...state.basket, action.item]
             }; 
+        case "REMOVE_FROM_BASKET": 
+            // **** Cannot use this because if we have multiple of same 
+            // items and we press remove one from the basket, it will remove 
+            // all of them from the basket
+            // return { 
+            //     ...state, 
+            //     basket: state.basket.filter(item => item.id !== action.id)
+            // }
+            const index = state.basket.findIndex(
+                (basketItem) => basketItem.id === action.id
+            ); 
+            let newBasket = [...state.basket]; 
 
+            if(index >= 0) {
+                newBasket.splice(index, 1); 
+            } else { 
+                console.warn(
+                    `Can't remove product (id: ${action.id}) as its not in basket!`
+                )
+            }
+
+            return {
+                ...state, 
+                basket: newBasket
+            }
         default: 
             return state; 
     }
