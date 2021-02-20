@@ -30,6 +30,7 @@ function Payment() {
         // Whenever the basket changes, the client Secret changes because we need to authorize the correct amount according to basket total
         // REALLY IMPORTANT SNIPPET 
 
+
         const getClientSecret = async () => {
             const response = await axios({
                 method: 'post', 
@@ -41,6 +42,8 @@ function Payment() {
 
         getClientSecret(); 
     }, [basket])
+
+    console.log("THE SECRET IS >>>", clientSecret)
     
     const handleSubmit = async (event) => { 
         
@@ -114,7 +117,8 @@ function Payment() {
                             {/* Stripe magic  */}
                         <form onSubmit={handleSubmit}> 
                             <CardElement onChange={handleChange} />
-
+                            {/* keep typing 4242 4242 4242 4242 42/42 42424 to test payment */}
+                             {/* Once processed the payment should come up on the stripe dashboard */}
                             <div className="payment__priceContainer">
                                 <CurrencyFormat 
                                     renderText={(value) => (
