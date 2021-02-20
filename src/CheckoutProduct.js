@@ -4,7 +4,7 @@ import { useStateValue } from './StateProvider'
 
 let ratingStar = 'https://static.vecteezy.com/system/resources/thumbnails/000/380/404/small/Basic_Elements__28175_29.jpg'
 
-function CheckoutProduct({id, image, title, price, rating}) {
+function CheckoutProduct({id, image, title, price, rating, hideButton}) {
     const [{ basket }, dispatch] = useStateValue(); 
 
     const removeFromBasket = () => {
@@ -29,7 +29,10 @@ function CheckoutProduct({id, image, title, price, rating}) {
                 <div className="checkoutProduct__rating">
                     {Array(rating).fill().map((_, i) => <img src={ratingStar} alt='rating stars' className='product__rating'/> )}
                 </div>
-                <button onClick={removeFromBasket}>Remove From Basket</button>
+                {!hideButton && (
+                    <button onClick={removeFromBasket}>Remove From Basket</button>
+                )}
+                
             </div>
         </div>
     )

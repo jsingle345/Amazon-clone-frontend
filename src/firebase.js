@@ -1,4 +1,4 @@
-import firebase from "firebase"; //npm i react-firebase
+import firebase from "firebase"; 
 
 const firebaseConfig = {
     apiKey: "AIzaSyBChIfGkC1J7LXO9-cxnb7SzMukrmabZbQ",
@@ -16,3 +16,9 @@ const firebaseConfig = {
   const auth = firebase.auth(); 
 
   export { db, auth }; 
+
+  
+//npm i react-firebase
+// Need this to access firebase, can get this from the firebase console
+// Need to export 'auth' for user sign in, in Login component
+// Need to export 'db' for payment orders in the Payment component

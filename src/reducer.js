@@ -15,6 +15,14 @@ const reducer = (state, action) => {
                 ...state, 
                 basket: [...state.basket, action.item]
             }; 
+
+        case "EMPTY_BASKET": 
+            return {
+                ...state, 
+                basket: []
+            }
+
+
         case "REMOVE_FROM_BASKET": 
             // **** Cannot use this because if we have multiple of same 
             // items and we press remove one from the basket, it will remove 
