@@ -8,6 +8,12 @@ import Payment from './Payment'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { auth } from "./firebase"; 
 import { useStateValue } from './StateProvider';
+import { loadStripe } from '@stripe/stripe-js'
+import { Elements } from '@stripe/react-stripe-js'
+
+const promise = loadStripe("pk_test_51IMklRGjCDw52nsYZ3A6GMTUkSShTZDQsREYyNQIRP4UwQPESqc3QtsCIFqXKX1vNTjZwg3CGczYzlM71zd5rEHY00wvpkrECi")
+//This is a public key from stripe.com in development tab
+
 
 function App() {
   // BEM - Block, Element, Modifier
@@ -51,7 +57,9 @@ function App() {
           </Route>
           <Route path="/payment"> 
             <Header />
-            <Payment />
+            <Elements stripe={promise}>  {/* Higher Order Function */}
+              <Payment />
+            </Elements>
           </Route>
           <Route path='/'>
             <Header />
@@ -67,3 +75,8 @@ function App() {
 }
 
 export default App;
+
+
+// need to install these two for stripe 
+        // npm i @stripe/stripe-js
+        // npm i @stripe/react-stripe-js

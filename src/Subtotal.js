@@ -6,7 +6,7 @@ import { getBasketTotal } from './reducer';
 import { useHistory } from "react-router-dom"
 
 function Subtotal() {
-    // made using React Currency Format
+    // made using React Currency Format --- npm i react-currency-format
     const history = useHistory(); 
     const [{ basket }, dispatch] = useStateValue(); 
 
