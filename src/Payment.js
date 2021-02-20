@@ -1,14 +1,16 @@
-import React, { useState } from 'react'; 
+import React, { useState, useEffect } from 'react'; 
 import CheckoutProduct from './CheckoutProduct';
 import './Payment.css'; 
 import { useStateValue } from "./StateProvider"; 
-import { Link } from 'react-router-dom'
-import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js"
+import { Link, useHistory} from 'react-router-dom'; 
+import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { getBasketTotal } from './reducer';
-import CurrencyFormat from "react-currency-format"
+import CurrencyFormat from "react-currency-format"; 
+import axios from './axios'
 
 function Payment() {
     const [{ basket, user }, dispatch] = useStateValue(); 
+    const history = useHistory(); 
 
     const stripe = useStripe(); 
     const elements = useElements(); 
@@ -17,9 +19,48 @@ function Payment() {
     const [processing, setProcessing] = useState("")
     const [error, setError] = useState(null); 
     const [disabled, setDisabled] = useState(true); 
+
+    // Before we process the card, we need to use client secret 
+    // This tells stripe that we have a payment to process and stripe gives a client secret to run by the card
+
+    const [clientSecret, setClientSecret] = useState(true)
+
+    useEffect(() => {
+        // generate the special stripe secret which allows us to charge a customer
+        // Whenever the basket changes, the client Secret changes because we need to authorize the correct amount according to basket total
+        // REALLY IMPORTANT SNIPPET 
+
+        const getClientSecret = async () => {
+            const response = await axios({
+                method: 'post', 
+                // Stripe expects the total in a currencies subunits. (if you are using dollar, expects you to use cents)
+                url: `/payments/create?total=${getBasketTotal(basket) * 100}`
+            }); 
+            setClientSecret(response.data.clientSecret)
+        }
+
+        getClientSecret(); 
+    }, [basket])
     
-    const handleSubmit = e => { 
-        //All the fancy stripe stuff...
+    const handleSubmit = async (event) => { 
+        
+        event.preventDefault(); 
+        setProcessing(true); 
+
+        const payload = await stripe.confirmCardPayment(clientSecret, {
+            payment_method: {
+                card: elements.getElement(CardElement)
+            }
+        }).then(({ paymentIntent }) => {
+            // paymentIntent = paymentConfirmation
+
+            setSucceeded(true)
+            setError(null)
+            setProcessing(false)
+
+            history.replace('/orders')
+        })
+
     }
 
     const handleChange = event => {
@@ -89,6 +130,9 @@ function Payment() {
                                     <span>{processing ? <p>Processing</p> : "Buy Now"}</span>
                                 </button>
                             </div>
+
+                            {/* Errors */}
+                            {error && <div>{error}</div>}
                         </form>
                     </div>
                 </div>
@@ -98,3 +142,13 @@ function Payment() {
 }
 
 export default Payment
+
+// To connect the cloud storage to the payment process 
+// In the terminal : 
+// firebase init
+// Click on Functions option
+// Choose JavaScript 
+// Choose (Y)es for use ESLint to catch probable bugs
+// Choose (Y)es to install dependencies with npm 
+
+// Creates a Functions folder which is a full backend 
