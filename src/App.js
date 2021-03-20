@@ -85,3 +85,5 @@ export default App;
 // need to install these two for stripe 
         // npm i @stripe/stripe-js
         // npm i @stripe/react-stripe-js
+
+// When ready to push to the firebase, type "npm run build" + "firebase deploy"

@@ -44,8 +44,8 @@ function Payment() {
         getClientSecret(); 
     }, [basket])
 
-    console.log("THE SECRET IS >>>", clientSecret)
-    console.log('user', user)
+    // console.log("THE SECRET IS >>>", clientSecret)
+    // console.log('user', user)
 
     const handleSubmit = async (event) => { 
         
